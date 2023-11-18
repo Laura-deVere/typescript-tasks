@@ -1,0 +1,12 @@
+.task {
+	display: flex;
+	&__input-wrapper {
+		width: 100%;
+	}
+}
+
+.checkbox-wrapper {
+	display: flex;
+	align-items: center;
+	margin-right: 8px;
+}

@@ -1,0 +1,54 @@
+@import "../../scss/colors.scss";
+
+.new-project {
+	background-color: $gray-3;
+	color: white;
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	border-radius: 8px;
+	&__tasks {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: none;
+	}
+	&:focus-within {
+		.new-project__tasks {
+			display: block;
+		}
+	}
+	input[type="text"] {
+		margin-bottom: 12px;
+		width: 100%;
+	}
+	form {
+		display: flex;
+		flex-direction: column;
+	}
+	input[type="checkbox"] {
+		outline: 1px dotted $orange;
+		outline-offset: 2px;
+		margin: 0 8px 0 0;
+		padding: 0;
+	}
+	button[type="submit"] {
+		align-self: flex-end;
+		background-color: $orange;
+		border: none;
+		color: $gray-2;
+		padding: 4px 8px;
+		border-radius: 4px;
+		font-size: 14px;
+		font-family: "Montserrat", sans-serif;
+		font-weight: 300;
+		cursor: pointer;
+		outline: 1px dotted $orange;
+		outline-offset: 2px;
+	}
+	.add-task {
+		background-color: transparent;
+		color: white;
+		border: none;
+	}
+}
