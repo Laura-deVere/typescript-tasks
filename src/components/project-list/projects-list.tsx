@@ -1,16 +1,14 @@
-import ProjectCard from "./project-card";
+import ProjectCard from "../project-card/project-card";
 
-export interface Project {
-	name: string;
-	id: string;
-	data: [];
-}
+import { ProjectsArray, Project } from "../../types";
 
-type ProjectsArray = Project[];
+import "./projects-list.scss";
+
+const className = "projects-list";
 
 const ProjectsList: React.FC<{ projects: ProjectsArray }> = ({ projects }) => {
 	return (
-		<ul>
+		<ul className={className}>
 			{projects.map((project: Project) => {
 				const { id } = project;
 				return <ProjectCard key={id} project={project} />;

@@ -14,7 +14,7 @@ const Task: React.FC<{ id: string; name: string; completed: boolean }> = ({
 	const [stateName, setStateName] = useState(name ?? "");
 
 	return (
-		<div className={className}>
+		<li className={className}>
 			<div className='checkbox-wrapper'>
 				<label>
 					<span className='sr-only'>Task Completed</span>
@@ -22,7 +22,10 @@ const Task: React.FC<{ id: string; name: string; completed: boolean }> = ({
 						type='checkbox'
 						id={id}
 						name={id}
-						onChange={() => setChecked(!checked)}
+						onChange={(evt) => {
+							evt.preventDefault();
+							setChecked(!checked);
+						}}
 						checked={checked}
 					/>
 				</label>
@@ -36,7 +39,7 @@ const Task: React.FC<{ id: string; name: string; completed: boolean }> = ({
 					placeholder='Task Name...'
 				/>
 			</div>
-		</div>
+		</li>
 	);
 };
 
