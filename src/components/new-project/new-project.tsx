@@ -17,7 +17,7 @@ const baseTaskId = "tsk";
 const NewProject: React.FC<{
 	addProject: (project: Project) => void;
 }> = ({ addProject }) => {
-	const projectId = nextId(baseProjId);
+	const [projectId, setProjectId] = useState(nextId(baseProjId));
 
 	const [stateName, setStateName] = useState("");
 	const [tasks, setTasks] = useState([
@@ -27,6 +27,13 @@ const NewProject: React.FC<{
 	const handleAddProject = (evt: React.FormEvent<HTMLFormElement>) => {
 		evt.preventDefault();
 		addProject({ id: projectId, name: stateName, data: tasks });
+		handleReset();
+	};
+
+	const handleReset = () => {
+		setStateName("");
+		setTasks([{ id: nextId(baseTaskId), name: "", completed: false }]);
+		setProjectId(nextId(baseProjId));
 	};
 
 	const addTask = () => {
@@ -35,6 +42,16 @@ const NewProject: React.FC<{
 				...prevTasks,
 				{ id: nextId(baseTaskId), name: "", completed: false },
 			];
+		});
+	};
+
+	const handleTaskChange = (id: string, name: string, completed: boolean) => {
+		setTasks((prevTasks) => {
+			const taskIndex = prevTasks.findIndex((task) => task.id === id);
+			const newTask = { ...prevTasks[taskIndex], name, completed };
+			const newTasks = [...prevTasks];
+			newTasks[taskIndex] = newTask;
+			return newTasks;
 		});
 	};
 
@@ -52,7 +69,13 @@ const NewProject: React.FC<{
 						{tasks.map((task) => {
 							const { id, name, completed } = task;
 							return (
-								<Task key={id} id={id} name={name} completed={completed} />
+								<Task
+									key={id}
+									id={id}
+									name={name}
+									completed={completed}
+									onChange={handleTaskChange}
+								/>
 							);
 						})}
 					</ul>
@@ -62,7 +85,9 @@ const NewProject: React.FC<{
 					<button type='button' className='add-task' onClick={addTask}>
 						<IonIcon color='light' icon={"add-outline"} />
 					</button>
-					<button type='submit'>Save</button>
+					<button type='submit' disabled={!stateName}>
+						Save
+					</button>
 				</div>
 			</form>
 		</div>

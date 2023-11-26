@@ -1,7 +1,19 @@
+@import "../../scss/colors.scss";
+
 .task {
 	display: flex;
 	&__input-wrapper {
 		width: 100%;
+	}
+
+	input[type="text"] {
+		margin-bottom: 12px;
+		font-size: 14px;
+		width: 100%;
+		&:focus-visible {
+			outline: 1px dotted $gray-6;
+			outline-offset: 2px;
+		}
 	}
 }
 
