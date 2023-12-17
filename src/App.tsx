@@ -59,6 +59,12 @@ const App = () => {
 		});
 	};
 
+	const deleteProject = (projectId: string) => {
+		setProjects((prevProjects: ProjectsArray) => {
+			return prevProjects.filter((project) => project.id !== projectId);
+		});
+	};
+
 	return (
 		<>
 			<TopNav />
@@ -66,7 +72,11 @@ const App = () => {
 				<NewProject addProject={addProject} />
 			</section>
 			<section className='section-prj-list'>
-				<ProjectsList projects={projects} updateProject={updateProject} />
+				<ProjectsList
+					projects={projects}
+					updateProject={updateProject}
+					deleteProject={deleteProject}
+				/>
 			</section>
 		</>
 	);

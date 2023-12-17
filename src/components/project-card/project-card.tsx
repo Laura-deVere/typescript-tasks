@@ -1,5 +1,8 @@
+import { useMemo } from "react";
+
 import { Project } from "../../types";
 
+import MoreMenu from "../more-menu/more-menu";
 import Task from "../task/task";
 
 import "./project-card.scss";
@@ -10,7 +13,8 @@ const classNamePrefix = `${className}__`;
 const ProjectCard: React.FC<{
 	project: Project;
 	updateProject: (project: Project) => void;
-}> = ({ project, updateProject }) => {
+	deleteProject: (projectId: string) => void;
+}> = ({ project, updateProject, deleteProject }) => {
 	const tasks = project.data;
 
 	const handleUpdateProject = (
@@ -29,27 +33,39 @@ const ProjectCard: React.FC<{
 		updateProject(newProject);
 	};
 
+	const menuItems = useMemo(() => {
+		return [
+			{
+				name: "Delete",
+				onClick: () => {
+					deleteProject(project.id);
+				},
+			},
+		];
+	}, [project, deleteProject]);
+
 	return (
 		<li className={className}>
 			<h3>{project.name}</h3>
-			<ul>
-				<div className={`${classNamePrefix}tasks`}>
-					<ul>
-						{tasks.map((task) => {
-							const { id, name, completed } = task;
-							return (
-								<Task
-									key={id}
-									id={id}
-									name={name}
-									completed={completed}
-									onChange={handleUpdateProject}
-								/>
-							);
-						})}
-					</ul>
-				</div>
-			</ul>
+			<div className={`${classNamePrefix}tasks`}>
+				<ul>
+					{tasks.map((task) => {
+						const { id, name, completed } = task;
+						return (
+							<Task
+								key={id}
+								id={id}
+								name={name}
+								completed={completed}
+								onChange={handleUpdateProject}
+							/>
+						);
+					})}
+				</ul>
+			</div>
+			<footer className={`${classNamePrefix}footer`}>
+				<MoreMenu items={menuItems} />
+			</footer>
 		</li>
 	);
 };

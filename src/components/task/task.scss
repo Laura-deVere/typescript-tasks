@@ -2,16 +2,35 @@
 
 .task {
 	display: flex;
+	position: relative;
 	&__input-wrapper {
 		width: 100%;
+		position: relative;
+		.task__btn-delete {
+			display: none;
+			position: absolute;
+			right: 8px;
+			transform: translateY(calc(50% - 2px));
+			background-color: transparent;
+			border: none;
+			cursor: pointer;
+		}
+		&:hover,
+		&:focus-within {
+			.task__btn-delete {
+				display: inline-block;
+			}
+		}
 	}
 
 	input[type="text"] {
-		margin-bottom: 12px;
+		margin-bottom: 8px;
 		font-size: 14px;
 		width: 100%;
+		max-width: calc(100% - 10px);
 		&:focus-visible {
-			outline: 1px dotted $gray-6;
+			outline: 0.5px solid $gray-6;
+			border-radius: 4px;
 			outline-offset: 2px;
 		}
 	}

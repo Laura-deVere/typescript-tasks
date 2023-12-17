@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { IonIcon } from "@ionic/react";
 
 import Checkbox from "../checkbox/checkbox";
 
@@ -46,6 +47,15 @@ const Task: React.FC<{
 					onChange={(evt) => onNameChangeHandler(evt.target.value)}
 					placeholder='Task Name...'
 				/>
+				<button
+					className={`${classNamePrefix}btn-delete`}
+					type='button'
+					onClick={() => {
+						// setIsOpen(!isOpen);
+					}}
+				>
+					<IonIcon color='light' icon={"trash-outline"} />
+				</button>
 			</div>
 		</li>
 	);
