@@ -1,4 +1,6 @@
 import { useMemo } from "react";
+import nextId from "react-id-generator";
+import { IonIcon } from "@ionic/react";
 
 import { Project } from "../../types";
 
@@ -9,6 +11,8 @@ import "./project-card.scss";
 
 const className = "project-card";
 const classNamePrefix = `${className}__`;
+
+const baseTaskId = "tsk";
 
 const ProjectCard: React.FC<{
 	project: Project;
@@ -44,6 +48,21 @@ const ProjectCard: React.FC<{
 		];
 	}, [project, deleteProject]);
 
+	const handleDeleteTask = (taskId: string) => {
+		const newTasks = tasks.filter((task) => task.id !== taskId);
+		const newProject = { ...project, data: newTasks };
+		updateProject(newProject);
+	};
+
+	const handleNewTask = () => {
+		const newTasks = [
+			...tasks,
+			{ id: nextId(baseTaskId), name: "", completed: false },
+		];
+		const newProject = { ...project, data: newTasks };
+		updateProject(newProject);
+	};
+
 	return (
 		<li className={className}>
 			<h3>{project.name}</h3>
@@ -58,12 +77,20 @@ const ProjectCard: React.FC<{
 								name={name}
 								completed={completed}
 								onChange={handleUpdateProject}
+								onDelete={handleDeleteTask}
 							/>
 						);
 					})}
 				</ul>
 			</div>
 			<footer className={`${classNamePrefix}footer`}>
+				<button
+					type='button'
+					className={`${classNamePrefix}new-task`}
+					onClick={handleNewTask}
+				>
+					<IonIcon color='light' icon={"add-outline"} />
+				</button>
 				<MoreMenu items={menuItems} />
 			</footer>
 		</li>

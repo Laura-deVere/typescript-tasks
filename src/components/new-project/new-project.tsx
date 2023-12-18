@@ -55,6 +55,12 @@ const NewProject: React.FC<{
 		});
 	};
 
+	const handleDeleteTask = (taskId: string) => {
+		setTasks((prevTasks) => {
+			return prevTasks.filter((task) => task.id !== taskId);
+		});
+	};
+
 	return (
 		<div className={className}>
 			<form onSubmit={handleAddProject}>
@@ -75,6 +81,7 @@ const NewProject: React.FC<{
 									name={name}
 									completed={completed}
 									onChange={handleTaskChange}
+									onDelete={handleDeleteTask}
 								/>
 							);
 						})}

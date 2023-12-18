@@ -26,4 +26,15 @@
 		justify-content: flex-end;
 		align-items: flex-end;
 	}
+	&__new-task {
+		background-color: transparent;
+		color: white;
+		font-size: 22px;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border: none;
+		padding: 0;
+	}
 }

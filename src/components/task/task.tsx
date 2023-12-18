@@ -13,7 +13,8 @@ const Task: React.FC<{
 	name: string;
 	completed: boolean;
 	onChange: (id: string, value: string, completed: boolean) => void;
-}> = ({ id, name, completed, onChange }) => {
+	onDelete: (id: string) => void;
+}> = ({ id, name, completed, onChange, onDelete }) => {
 	const onNameChangeHandler = useCallback(
 		(value: string) => {
 			onChange(id, value, completed);
@@ -51,7 +52,7 @@ const Task: React.FC<{
 					className={`${classNamePrefix}btn-delete`}
 					type='button'
 					onClick={() => {
-						// setIsOpen(!isOpen);
+						onDelete(id);
 					}}
 				>
 					<IonIcon color='light' icon={"trash-outline"} />
