@@ -1,8 +1,16 @@
-import { useMemo } from "react";
-import nextId from "react-id-generator";
+import {
+	useMemo,
+	useState,
+	useContext,
+	useCallback,
+	useEffect,
+	useRef,
+} from "react";
 import { IonIcon } from "@ionic/react";
+import { isEqual } from "lodash";
 
 import { Project } from "../../types";
+import { ProjectsContext } from "../../context/projects-context";
 
 import MoreMenu from "../more-menu/more-menu";
 import Task from "../task/task";
@@ -12,68 +20,82 @@ import "./project-card.scss";
 const className = "project-card";
 const classNamePrefix = `${className}__`;
 
-const baseTaskId = "tsk";
-
 const ProjectCard: React.FC<{
 	project: Project;
-	updateProject: (project: Project) => void;
-	deleteProject: (projectId: string) => void;
-}> = ({ project, updateProject, deleteProject }) => {
-	const tasks = project.data;
+}> = ({ project }) => {
+	const [localProject, setLocalProject] = useState(Object.assign(project, {}));
+	const { deleteProject, updateProject } = useContext(ProjectsContext);
 
-	const handleUpdateProject = (
+	const tasks = useMemo(() => {
+		if (!localProject) return [];
+		return localProject.tasks;
+	}, [localProject]);
+
+	const projectRef = useRef<Project | null>(null);
+
+	useEffect(() => {
+		projectRef.current = { ...localProject };
+	}, [localProject]);
+
+	function handleUpdateProject(
 		taskId: string,
 		name: string,
 		completed: boolean
-	) => {
-		const copy = [...tasks];
-		const task = copy.find((task) => task.id === taskId);
-		if (task) {
-			task.name = name;
-			task.completed = completed;
-		}
+	) {
+		const copyTasks = projectRef.current.tasks.map((task) => {
+			if (task._id === taskId) {
+				task.name = name;
+				task.completed = completed;
+			}
+			return task;
+		});
+		const newProject = { ...localProject, tasks: copyTasks };
 
-		const newProject = { ...project, data: copy };
 		updateProject(newProject);
-	};
+	}
+
+	useEffect(() => {
+		if (isEqual(localProject, project)) return;
+		setLocalProject(Object.assign(project, {}));
+	}, [project]);
 
 	const menuItems = useMemo(() => {
 		return [
 			{
 				name: "Delete",
 				onClick: () => {
-					deleteProject(project.id);
+					deleteProject(localProject._id);
 				},
 			},
 		];
-	}, [project, deleteProject]);
+	}, [localProject, deleteProject]);
 
-	const handleDeleteTask = (taskId: string) => {
-		const newTasks = tasks.filter((task) => task.id !== taskId);
-		const newProject = { ...project, data: newTasks };
-		updateProject(newProject);
-	};
+	const handleDeleteTask = useCallback(
+		(taskId: string) => {
+			const newTasks = localProject.tasks.filter((task) => task._id !== taskId);
+			const newProject = { ...localProject, tasks: newTasks };
+			updateProject(newProject);
+		},
+		[localProject]
+	);
 
-	const handleNewTask = () => {
-		const newTasks = [
-			...tasks,
-			{ id: nextId(baseTaskId), name: "", completed: false },
-		];
-		const newProject = { ...project, data: newTasks };
+	const handleNewTask = useCallback(() => {
+		const newTasks = [...localProject.tasks, { name: "", completed: false }];
+		const newProject = { ...localProject, tasks: newTasks };
 		updateProject(newProject);
-	};
+	}, [localProject]);
 
 	return (
 		<li className={className}>
-			<h3>{project.name}</h3>
+			<h3>{localProject?.name}</h3>
 			<div className={`${classNamePrefix}tasks`}>
 				<ul>
 					{tasks.map((task) => {
-						const { id, name, completed } = task;
+						const { _id, name, completed } = task;
 						return (
 							<Task
-								key={id}
-								id={id}
+								key={_id}
+								id={_id}
 								name={name}
 								completed={completed}
 								onChange={handleUpdateProject}

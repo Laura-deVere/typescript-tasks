@@ -1,28 +1,20 @@
+import { useContext } from "react";
 import ProjectCard from "../project-card/project-card";
 
-import { ProjectsArray, Project } from "../../types";
+import { Project } from "../../types";
+import { ProjectsContext } from "../../context/projects-context";
 
 import "./projects-list.scss";
 
 const className = "projects-list";
 
-const ProjectsList: React.FC<{
-	projects: ProjectsArray;
-	updateProject: (project: Project) => void;
-	deleteProject: (projectId: string) => void;
-}> = ({ projects, updateProject, deleteProject }) => {
+const ProjectsList: React.FC = () => {
+	const { projects } = useContext(ProjectsContext);
 	return (
 		<ul className={className}>
 			{projects.map((project: Project) => {
-				const { id } = project;
-				return (
-					<ProjectCard
-						key={id}
-						project={project}
-						updateProject={updateProject}
-						deleteProject={deleteProject}
-					/>
-				);
+				const { _id } = project;
+				return <ProjectCard key={_id} project={project} />;
 			})}
 		</ul>
 	);

@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "@ionic/react": "^7.5.5",
+    "@types/lodash": "^4.14.202",
     "ionicons": "^7.2.1",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-id-generator": "^3.0.2"

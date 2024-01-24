@@ -1,13 +1,13 @@
 export interface Task {
-	id: string;
+	_id: string;
 	name: string;
 	completed: boolean;
 }
 
 export interface Project {
 	name: string;
-	id: string;
-	data: Task[] | [];
+	_id: string;
+	tasks: Task[] | [];
 }
 
 export type ProjectsArray = Project[];

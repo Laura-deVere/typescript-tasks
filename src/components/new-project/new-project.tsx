@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import nextId from "react-id-generator";
 import { IonIcon } from "@ionic/react";
 
-import Task from "../task/task";
+import { ProjectsContext } from "../../context/projects-context";
+import { Project } from "../../types";
 
-import { Project, ProjectsArray } from "../../types";
+import Task from "../task/task";
 
 import "./new-project.scss";
 
@@ -14,10 +15,9 @@ const classNamePrefix = `${className}__`;
 const baseProjId = "prj";
 const baseTaskId = "tsk";
 
-const NewProject: React.FC<{
-	addProject: (project: Project) => void;
-}> = ({ addProject }) => {
-	const [projectId, setProjectId] = useState(nextId(baseProjId));
+const NewProject: React.FC = () => {
+	const { createProject } = useContext(ProjectsContext);
+	// const [projectId, setProjectId] = useState(nextId(baseProjId));
 
 	const [stateName, setStateName] = useState("");
 	const [tasks, setTasks] = useState([
@@ -26,14 +26,14 @@ const NewProject: React.FC<{
 
 	const handleAddProject = (evt: React.FormEvent<HTMLFormElement>) => {
 		evt.preventDefault();
-		addProject({ id: projectId, name: stateName, data: tasks });
+		createProject({ name: stateName, tasks: tasks });
 		handleReset();
 	};
 
 	const handleReset = () => {
 		setStateName("");
 		setTasks([{ id: nextId(baseTaskId), name: "", completed: false }]);
-		setProjectId(nextId(baseProjId));
+		// setProjectId(nextId(baseProjId));
 	};
 
 	const addTask = () => {
