@@ -26,6 +26,7 @@ const NewProject: React.FC = () => {
 
 	const handleAddProject = (evt: React.FormEvent<HTMLFormElement>) => {
 		evt.preventDefault();
+		console.log("handleAddProject", { name: stateName, tasks: tasks });
 		createProject({ name: stateName, tasks: tasks });
 		handleReset();
 	};

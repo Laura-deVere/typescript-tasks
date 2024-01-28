@@ -89,6 +89,7 @@ const ProjectsProvider: React.FC<{ children: any; isLoggedIn: boolean }> = ({
 	}, [isLoggedIn]);
 
 	const createProject = async (project: Project) => {
+		console.log("createProject", project);
 		try {
 			const newProject = await ProjectsApi.createProject(project);
 			dispatch({ type: ACTIONS.CREATE_PROJECT, payload: newProject });
@@ -115,12 +116,19 @@ const ProjectsProvider: React.FC<{ children: any; isLoggedIn: boolean }> = ({
 		}
 	};
 
+	const setProjects = (newProjectsArray: ProjectsArray) => {
+		console.log("setProjects", newProjectsArray);
+		dispatch({ type: ACTIONS.GET_PROJECTS, payload: newProjectsArray });
+	};
+
 	const value = {
 		projects: state.projects,
 		createProject,
 		deleteProject,
 		updateProject,
+		setProjects,
 	};
+
 	return (
 		<ProjectsContext.Provider value={value}>
 			{children}

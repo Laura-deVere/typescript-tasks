@@ -1,4 +1,4 @@
-export interface Task {
+export interface TaskType {
 	_id: string;
 	name: string;
 	completed: boolean;
@@ -7,7 +7,7 @@ export interface Task {
 export interface Project {
 	name: string;
 	_id: string;
-	tasks: Task[] | [];
+	tasks: TaskType[] | [];
 }
 
 export type ProjectsArray = Project[];
