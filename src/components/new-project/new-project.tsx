@@ -3,7 +3,6 @@ import nextId from "react-id-generator";
 import { IonIcon } from "@ionic/react";
 
 import { ProjectsContext } from "../../context/projects-context";
-import { Project } from "../../types";
 
 import Task from "../task/task";
 
@@ -12,12 +11,10 @@ import "./new-project.scss";
 const className = "new-project";
 const classNamePrefix = `${className}__`;
 
-const baseProjId = "prj";
 const baseTaskId = "tsk";
 
 const NewProject: React.FC = () => {
 	const { createProject } = useContext(ProjectsContext);
-	// const [projectId, setProjectId] = useState(nextId(baseProjId));
 
 	const [stateName, setStateName] = useState("");
 	const [tasks, setTasks] = useState([
@@ -26,7 +23,7 @@ const NewProject: React.FC = () => {
 
 	const handleAddProject = (evt: React.FormEvent<HTMLFormElement>) => {
 		evt.preventDefault();
-		console.log("handleAddProject", { name: stateName, tasks: tasks });
+		// console.log("handleAddProject", { name: stateName, tasks: tasks });
 		createProject({ name: stateName, tasks: tasks });
 		handleReset();
 	};

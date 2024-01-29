@@ -37,13 +37,13 @@ const ProjectCard: React.FC<{
 	const { deleteProject, updateProject } = useContext(ProjectsContext);
 
 	const [{ handlerId }, drop] = useDrop({
-		accept: "card",
+		accept: DRAG_TYPE,
 		collect(monitor) {
 			return {
 				handlerId: monitor.getHandlerId(),
 			};
 		},
-		hover(item, monitor) {
+		hover(item: any, monitor): void {
 			if (!ref.current) {
 				return;
 			}
@@ -60,8 +60,8 @@ const ProjectCard: React.FC<{
 			const hoverMiddleX =
 				(hoverBoundingRect.right - hoverBoundingRect.left) / 2;
 			const clientOffset = monitor.getClientOffset();
-			const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-			const hoverClientX = clientOffset.x - hoverBoundingRect.right;
+			const hoverClientY = clientOffset!.y - hoverBoundingRect.top;
+			const hoverClientX = clientOffset!.x - hoverBoundingRect.right;
 
 			// Only perform the move when the mouse has crossed half of the items height or width
 			// When dragging downwards or right to left, only move when the cursor is below 50%
@@ -139,7 +139,7 @@ const ProjectCard: React.FC<{
 		name: string,
 		completed: boolean
 	) {
-		const copyTasks = projectRef.current.tasks.map((task) => {
+		const copyTasks = projectRef.current?.tasks.map((task) => {
 			if (task._id === taskId) {
 				task.name = name;
 				task.completed = completed;

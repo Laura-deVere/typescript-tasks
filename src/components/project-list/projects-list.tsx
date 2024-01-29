@@ -1,10 +1,11 @@
 import update from "immutability-helper";
 import { useCallback, useContext, useRef, useEffect } from "react";
+import ReactDOM from "react-dom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 import ProjectCard from "../project-card/project-card";
-import { Project, ProjectsArray } from "../../types";
+import { Project } from "../../types";
 import { ProjectsContext } from "../../context/projects-context";
 
 import "./projects-list.scss";
@@ -17,7 +18,7 @@ const ProjectsList: React.FC = () => {
 
 	useEffect(() => {
 		const grid = gridRef.current;
-		adjustGridItemsHeight(grid);
+		if (grid) adjustGridItemsHeight(grid);
 	});
 
 	const moveProject = useCallback(
@@ -66,19 +67,23 @@ const ProjectsList: React.FC = () => {
 	);
 };
 
-const adjustGridItemsHeight = (grid) => {
+const adjustGridItemsHeight = (grid: HTMLElement) => {
+	// console.log(grid);
 	const items = grid.children;
 
 	for (let i = 0; i < items.length; i++) {
-		let item = items[i];
+		// let item = items[i];
+		let item = ReactDOM.findDOMNode(items[i])! as HTMLElement;
+		console.log(typeof item);
 		let rowHeight = parseInt(
 			window.getComputedStyle(grid).getPropertyValue("grid-auto-rows")
 		);
 		let rowGap = parseInt(
 			window.getComputedStyle(grid).getPropertyValue("grid-row-gap")
 		);
+		let itemChild = item!.firstChild as HTMLElement;
 		let rowSpan = Math.ceil(
-			(item.firstChild.getBoundingClientRect().height + rowGap) /
+			(itemChild!.getBoundingClientRect().height + rowGap) /
 				(rowHeight + rowGap)
 		);
 		item.style.gridRowEnd = "span " + rowSpan;
